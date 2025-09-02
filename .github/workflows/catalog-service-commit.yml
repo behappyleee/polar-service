@@ -1,7 +1,7 @@
 name: Commit Stage
 on: push
 paths: 
-   - 'catalog-service/'
+   - 'catalog-service/**'
 
 env:
   REGISTRY: ghcr.io
