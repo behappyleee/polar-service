@@ -1,4 +1,8 @@
 spring:
+  session:
+    timeout: 10m
+    redis:
+      namespace: polar:edge
   application:
     name: edge-service
   cloud:
@@ -31,6 +35,13 @@ spring:
               max-life-time: 60s
               type: elastic
           default-filters:
+            - SaveSession
+            - name: RequestRateLimiter
+              args:
+                  redis-rate-limiter:
+                    replenishRate: 10 # ?? ??? ???? ??? ?
+                    burstCapacity: 20 # ?? 20? ???? ??
+                    requestedTokens: 1 # ??? ?? ??? ? ?? ??? ?? ??? ??
             - name: Retry
               args:
                 retries: 3
@@ -43,6 +54,12 @@ spring:
                   maxBackoff: 1s
                   factor: 2
                   basedOnPreviousValue: false
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
 server:
   port: 9000
   netty:
@@ -61,3 +78,6 @@ resilience4j:
     configs:
       default:
         timeout-duration: 5s
+logging:
+  level:
+    io.github.resilience4j: DEBUG
