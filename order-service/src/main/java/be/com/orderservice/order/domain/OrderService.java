@@ -2,6 +2,7 @@ package be.com.orderservice.order.domain;
 
 import be.com.orderservice.book.Book;
 import be.com.orderservice.config.BookClient;
+import be.com.orderservice.order.event.OrderDispatchedMessage;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,5 +38,25 @@ public class OrderService {
     public static Order buildRejectOrder(String bookIsbn, int quantity) {
         return Order.of(bookIsbn, null, null, quantity, OrderStatus.REJECTED);
     }
+
+    public Flux<Order> consumeOrderDispatchedEvent(Flux<OrderDispatchedMessage> flux) {
+        return flux.flatMap(message -> orderRepository.findById(message.orderId())
+        ).map(this::buildDispatchedOrder).flatMap(orderRepository::save);
+    }
+
+    private Order buildDispatchedOrder(Order order) {
+        return new Order(
+            order.id(),
+            order.bookIsbn(),
+            order.bookName(),
+            order.bookPrice(),
+            order.quantity(),
+            OrderStatus.DISPATCHED,
+            order.createdDate(),
+            order.lastModifiedDate(),
+            order.version()
+        );
+    }
+
 }
 
