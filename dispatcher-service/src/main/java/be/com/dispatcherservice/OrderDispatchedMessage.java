@@ -1,4 +1,5 @@
 package be.com.dispatcherservice;
 
-public class OrderDispatchedMessage {
-}
+public record OrderDispatchedMessage(
+    Long orderId
+) {}

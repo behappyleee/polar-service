@@ -1,5 +1,6 @@
 package be.com.dispatcherservice;
 
-public record OrderAccetedMessage(
-    
-)
+public record OrderAcceptedMessage(
+    Long orderId
+) {}
+
