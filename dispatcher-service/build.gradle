@@ -35,14 +35,6 @@ dependencies {
             classifier = 'test-binder'
         }
     }
-//    testImplementation('org.springframework.cloud:spring-cloud-stream') {
-//        artifact {
-//            name = 'spring-cloud-stream'
-//            extension = 'jar'
-//            type = 'test-jar'
-//            classifier = 'test-binder'
-//        }
-//    }
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
