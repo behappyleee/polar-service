@@ -28,14 +28,10 @@ public class SecurityConfig {
                     .anyExchange().authenticated()
                 )
                 .exceptionHandling(exceptionHandling ->
-                    exceptionHandling.authenticationEntryPoint(
-                        new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED)
-                    )
+                    exceptionHandling.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
                 .oauth2Login(Customizer.withDefaults())
-                .logout(logout -> logout.logoutSuccessHandler(
-                    oidcLogoutSuccessHandler(clientRegistrationRepository)
-                ))
+                .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)))
                 .csrf(csrf -> csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse()))
                 .build();
     }
